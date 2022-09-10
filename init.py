@@ -24,12 +24,9 @@ class WXZ_Nodes_Presets_Preferences(AddonPreferences):
     def draw(self, context):
         layout = self.layout
 
-        CN_path = os.path.join(os.path.dirname(
-            os.path.__file__), 'CN', 'CN_Nodes.blend')
-        GN_path = os.path.join(os.path.dirname(
-            os.path.__file__), 'GN', 'GN_Nodes.blend')
-        SN_path = os.path.join(os.path.dirname(
-            os.path.__file__), 'SN', 'SN_Nodes.blend')
+        CN_path = os.path.join(os.path.getcwd(), 'CN', 'CN_Nodes.blend')
+        GN_path = os.path.join(os.path.getcwd(), 'GN', 'GN_Nodes.blend')
+        SN_path = os.path.join(os.path.getcwd(), 'SN', 'SN_Nodes.blend')
 
         row = layout.row()
         row.label

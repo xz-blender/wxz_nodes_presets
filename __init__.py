@@ -1,5 +1,5 @@
 from bpy.types import PropertyGroup, AddonPreferences, Operator
-from bpy.props import BoolProperty, PointerProperty
+from bpy.props import BoolProperty, PointerProperty, StringProperty
 import bpy
 import os
 
@@ -13,9 +13,9 @@ bl_info = {
 
 
 sub_modules_names = [
-    # "CN_init",
+    "CN_init",
     "GN_init",
-    # "SN_init"
+    "SN_init"
 ]
 sub_modules = [
     __import__(__package__ + "." + submod, {}, {}, submod)
@@ -87,27 +87,49 @@ class WXZ_Nodes_Presets_Preferences(AddonPreferences):
     bl_idname = __name__
 
     def draw(self, context):
-        layout = self.layout
-
         CN_path = os.path.join(os.path.dirname(__file__), 'CN_Nodes.blend')
         GN_path = os.path.join(os.path.dirname(__file__), 'GN_Nodes.blend')
         SN_path = os.path.join(os.path.dirname(__file__), 'SN_Nodes.blend')
 
+        layout = self.layout
         box = layout.box()
         row = box.row()
-        gn_op = row.operator('wm.open_mainfile',
-                             text='打开Composite Nodes文件')
-        gn_op.filepath = CN_path
-        row.operator('wm.open_mainfile',
-                     text='打开Geometry Nodes文件').filepath = GN_path
-        row.operator('wm.open_mainfile',
-                     text='打开Shader Nodes文件').filepath = SN_path
+        op = row.operator(Open_File_With_New_Program.bl_idname,
+                          text='打开Composite Nodes文件')
+        op.path = CN_path
+        op.hide_props_region = False
+        op = row.operator(Open_File_With_New_Program.bl_idname,
+                          text='打开Geometry Nodes文件')
+        op.path = GN_path
+        op = row.operator(Open_File_With_New_Program.bl_idname,
+                          text='打开Shader Nodes文件')
+        op.path = SN_path
+
+
+class Open_File_With_New_Program(Operator):
+    bl_label = ''
+    bl_idname = 'file.open_file_with_new_program'
+    bl_options = {'REGISTER', 'UNDO'}
+
+    path: StringProperty()
+    hide_props_region: BoolProperty()
+
+    @classmethod
+    def poll(cls, context):
+        return True
+
+    def execute(self, context):
+        path = self.path
+        bpy.ops.wm.open_mainfile(filepath=path)
+        return {'FINISHED'}
 
 
 classes = [
     WXZ_Nodes_Presets_Preferences,
+    Open_File_With_New_Program,
 
 ]
+
 
 for mod in sub_modules:
     info = mod.bl_info
@@ -124,20 +146,6 @@ for mod in sub_modules:
 
         return update
 
-    create_property(
-        WXZ_Nodes_Presets_Preferences,
-        'use_' + mod_name,
-        BoolProperty(
-            name=info['name'],
-            description=info.get('description', ''),
-            update=gen_update(mod),
-            default=True,
-        ),
-    )
-
-    create_property(WXZ_Nodes_Presets_Preferences, 'show_expanded_' +
-                    mod_name, BoolProperty())
-
 
 def register():
     for cls in classes:
@@ -147,9 +155,7 @@ def register():
     for mod in sub_modules:
         if not hasattr(mod, '__addon_enabled__'):
             mod.__addon_enabled__ = False
-        name = mod.__name__.split('.')[-1]
-        if getattr(prefs, 'use_' + name):
-            register_submodule(mod)
+        register_submodule(mod)
 
 
 def unregister():

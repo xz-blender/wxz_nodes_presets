@@ -5,14 +5,11 @@ import os
 
 bl_info = {
     "name": "wxz_nodes_presets",
-    "description": "",
     "author": "wxz",
-    "version": (0, 0, 1),
-    "blender": (2, 9, 0),
-    "location": "Node Editor",
-    "warning": "",
-    "wiki_url": "",
-    "category": "Node"}
+    "version": (0, 1, 0),
+    "blender": (2, 80, 0),
+    "category": "Node",
+}
 
 
 sub_modules_names = [
@@ -58,6 +55,12 @@ def get_addon_preferences(name=''):
         return addon_prefs
 
 
+def create_property(cls, name, prop):
+    if not hasattr(cls, '__annotations__'):
+        cls.__annotations__ = dict()
+    cls.__annotations__[name] = prop
+
+
 def register_submodule(mod):
     mod.register()
     mod.__addon_enabled__ = True
@@ -86,23 +89,54 @@ class WXZ_Nodes_Presets_Preferences(AddonPreferences):
     def draw(self, context):
         layout = self.layout
 
-        CN_path = os.path.join(os.path.getcwd(), 'CN_Nodes.blend')
-        GN_path = os.path.join(os.path.getcwd(), 'GN_Nodes.blend')
-        SN_path = os.path.join(os.path.getcwd(), 'SN_Nodes.blend')
+        CN_path = os.path.join(os.path.dirname(__file__), 'CN_Nodes.blend')
+        GN_path = os.path.join(os.path.dirname(__file__), 'GN_Nodes.blend')
+        SN_path = os.path.join(os.path.dirname(__file__), 'SN_Nodes.blend')
 
-        row = layout.box().row()
-        row.alignment = 'RIGHT'
-        sub_row = row.row()
-        sub_row.label(text=GN_path)
-        sub_row = row.row()
-        sub_row.scale_x = 1.4
-        sub_row.operator('wm.open_mainfile', text='打开GN文件')
+        box = layout.box()
+        row = box.row()
+        gn_op = row.operator('wm.open_mainfile',
+                             text='打开Composite Nodes文件')
+        gn_op.filepath = CN_path
+        row.operator('wm.open_mainfile',
+                     text='打开Geometry Nodes文件').filepath = GN_path
+        row.operator('wm.open_mainfile',
+                     text='打开Shader Nodes文件').filepath = SN_path
 
 
 classes = [
     WXZ_Nodes_Presets_Preferences,
 
 ]
+
+for mod in sub_modules:
+    info = mod.bl_info
+    mod_name = mod.__name__.split('.')[-1]
+
+    def gen_update(mod):
+        def update(self, context):
+            enabled = getattr(self, 'use_' + mod.__name__.split('.')[-1])
+            if enabled:
+                register_submodule(mod)
+            else:
+                unregister_submodule(mod)
+            mod.__addon_enabled__ = enabled
+
+        return update
+
+    create_property(
+        WXZ_Nodes_Presets_Preferences,
+        'use_' + mod_name,
+        BoolProperty(
+            name=info['name'],
+            description=info.get('description', ''),
+            update=gen_update(mod),
+            default=True,
+        ),
+    )
+
+    create_property(WXZ_Nodes_Presets_Preferences, 'show_expanded_' +
+                    mod_name, BoolProperty())
 
 
 def register():

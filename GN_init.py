@@ -36,27 +36,29 @@ def geo_cat_generator():
             layout = self.layout
             for group_name in geo_node_group_cache[self.bl_label]:
                 props = layout.operator(
-                    NODE_OT_GN_group_add.bl_idname,
+                    NODE_OT_GN_Nodes_add.bl_idname,
                     text=group_name,
                 )
                 props.group_name = group_name
 
         menu_type = type(
-            "GN_category_" + item[0],
-            (bpy.types.Menu),
+            "GN_MT_category_" + item[0],
+            (bpy.types.Menu,),
             {
-                "bl_idname": "GN_category_" + item[0].replace(" ", "_"),
+                "bl_idname": "GN_MT_ategory_" + item[0].replace(" ", "_"),
                 "bl_space_type": 'NODE_EDITOR',
                 "bl_label": item[0],
-                "draw": custom_draw,
+                "draw": custom_draw
             },
         )
+
         if menu_type not in geo_cat_list:
             geo_cat_list.append(menu_type)
             bpy.utils.register_class(menu_type)
 
 
 class NODE_MT_GN_Nodes_Menu(Menu):
+    bl_label = 'GN Nodes'
     bl_idname = __qualname__
 
     @classmethod

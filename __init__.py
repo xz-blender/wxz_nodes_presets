@@ -13,7 +13,7 @@ bl_info = {
 
 
 sub_modules_names = [
-    "CN_init",
+    # "CN_init",
     "GN_init",
     "SN_init"
 ]

@@ -12,6 +12,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import bpy.utils.previews
+from bpy.props import StringProperty, EnumProperty
+from bpy.types import Operator, Menu
+from bpy.app.handlers import persistent
+import os
+import bpy
+import json
 bl_info = {
     "name": "Nodes_SN",
     "author": "WXZ",
@@ -24,24 +31,20 @@ bl_info = {
     "doc_url": "",
     "tracker_url": "",
 }
-import json
-import bpy
-import os
-from bpy.app.handlers import persistent
-from bpy.types import Operator, Menu
-from bpy.props import StringProperty, EnumProperty
-import bpy.utils.previews
 
 
 def add_generators_button(self, context):
     if context.area.ui_type == 'ShaderNodeTree':
-        self.layout.menu('NODE_MT_custom_SN_menu', text="Custom_SN", icon='FUND')
+        self.layout.menu('NODE_MT_custom_SN_menu',
+                         text="Custom_SN", icon='FUND')
 
 
 shader_node_group_cache = {}
 shader_cat_list = []
 
 # adapted code from https://github.com/blender/blender/blob/master/release/scripts/modules/nodeitems_utils.py
+
+
 def shader_cat_generator():
     global shader_cat_list
     shader_cat_list = []
@@ -140,7 +143,7 @@ def register():
     for key in shader_node_group_cache:
         shader_node_group_cache[key] = []
 
-    with open(os.path.join(os.path.dirname(__file__), "shader_nodes.json"), 'r') as f:
+    with open(os.path.join(os.path.dirname(__file__), "SN_Nodes.json"), 'r') as f:
         shader_node_group_cache = json.loads(f.read())
 
     shader_cat_generator()

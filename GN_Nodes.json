@@ -10,11 +10,11 @@
   "生成": [
     "BB_Tubes",
     "boxmap",
-    "UV Unwrap",
+    "UV_Unwrap",
     "绳缠绕"
   ],
   "编辑": [
-    "Curve deform",
-    "Offset Multiple"
+    "Curve_deform",
+    "Offset_Multiple"
   ]
 }

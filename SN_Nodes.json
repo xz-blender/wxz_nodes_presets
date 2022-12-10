@@ -1,5 +1,6 @@
 {
   "材质": [
+    "OlympicShader",
     "视差Displacement"
   ],
   "生成": [

@@ -15,6 +15,7 @@
   ],
   "编辑": [
     "AutoSmooth",
+    "BB_Offset",
     "Curve_deform",
     "Offset_Multiple"
   ]

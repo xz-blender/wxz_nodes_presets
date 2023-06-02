@@ -15,7 +15,7 @@ bl_info = {
 sub_modules_names = [
     # "CN_init",
     "GN_init",
-    "SN_init"
+    # "SN_init"
 ]
 sub_modules = [
     __import__(__package__ + "." + submod, {}, {}, submod)

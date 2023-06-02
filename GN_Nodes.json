@@ -1,22 +1,29 @@
 {
-  "其他": [
-    "随机指定材质"
+  "Base Mesh": [
+    "GN_UV curve_Sphere",
+    "GN_底部柱体",
+    "GN_底部球体",
+    "GN_底部立方体"
   ],
-  "基础网格": [
-    "底部柱体",
-    "底部球体",
-    "底部立方体"
+  "Edit": [
+    "GN_AutoSmooth",
+    "GN_BB_Offset",
+    "GN_Curve_deform",
+    "GN_Offset_Multiple"
   ],
-  "生成": [
-    "BB_Tubes",
-    "boxmap",
-    "UV_Unwrap",
-    "绳缠绕"
+  "Generate": [
+    "GN_BB_Tubes",
+    "GN_boxmap",
+    "GN_Splines Patch",
+    "GN_UV_Unwrap",
+    "GN_绳缠绕"
   ],
-  "编辑": [
-    "AutoSmooth",
-    "BB_Offset",
-    "Curve_deform",
-    "Offset_Multiple"
+  "Others": [
+    "GN_随机指定材质"
+  ],
+  "Preview": [
+    "GN_3D_Viewer",
+    "GN_Index_Viewer",
+    "GN_Vector_Viewer"
   ]
 }

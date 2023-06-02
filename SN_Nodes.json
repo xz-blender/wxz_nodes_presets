@@ -1,12 +1,16 @@
 {
-  "材质": [
-    "OlympicShader",
-    "视差Displacement"
-  ],
-  "生成": [
+  "Generate": [
     "Rain Drips",
     "Rain Ripples",
     "点阵屏",
     "点阵屏_mapping"
+  ],
+  "Mat": [
+    "Color Variation",
+    "Dispersed Glass 2",
+    "OlympicShader",
+    "PBR Mixer",
+    "Uber Mapping",
+    "视差Displacement"
   ]
 }

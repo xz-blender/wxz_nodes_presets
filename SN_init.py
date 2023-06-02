@@ -35,7 +35,7 @@ bl_info = {
 
 def add_generators_button(self, context):
     if context.area.ui_type == 'ShaderNodeTree':
-        self.layout.menu('NODE_MT_custom_SN_menu',
+        self.layout.menu('NODE_MT_custom_SN_Menu',
                          text="Custom_SN", icon='FUND')
 
 
@@ -63,7 +63,7 @@ def shader_cat_generator():
             "category_" + item[0],
             (bpy.types.Menu,),
             {
-                "bl_idname": "category_"
+                "bl_idname": "category"
                 + item[0].replace(
                     " ", "_"
                 ),  # replace whitespace with uderscore to avoid alpha-numeric suffix warning
@@ -77,9 +77,9 @@ def shader_cat_generator():
             bpy.utils.register_class(menu_type)
 
 
-class NODE_MT_custom_SN_menu(Menu):
+class NODE_MT_custom_SN_Menu(Menu):
     bl_label = "SN Custom Nodes"
-    bl_idname = 'NODE_MT_custom_SN_menu'
+    bl_idname = 'NODE_MT_custom_SN_Menu'
 
     @classmethod
     def poll(cls, context):
@@ -130,7 +130,7 @@ class NODE_OT_SN_group_add(Operator):
         return {'FINISHED'}
 
 
-classes = (NODE_MT_custom_SN_menu, NODE_OT_SN_group_add)
+classes = (NODE_MT_custom_SN_Menu, NODE_OT_SN_group_add)
 
 
 def register():

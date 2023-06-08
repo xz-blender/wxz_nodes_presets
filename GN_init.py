@@ -39,7 +39,7 @@ from bpy.props import (
 )
 
 
-def add_higgsas_button(self, context):
+def add_gn_nodes_button(self, context):
     if context.area.ui_type == 'GeometryNodeTree':
         self.layout.menu('NODE_MT_GN_Nodes', text="GN_Nodes", icon='FUND')
 
@@ -63,8 +63,10 @@ def geo_cat_generator():
                 )
                 props.group_name = group_name
 
-        menu_type = type("NODE_MT_category_" + item[0], (bpy.types.Menu,), {
-            "bl_idname": "NODE_MT_category_" + item[0].replace(" ", "_"),   # replace whitespace with uderscore to avoid alpha-numeric suffix warning 
+        menu_type = type("NODE_MT_category_" + item[0], (bpy.types.Menu,),
+        {
+            # replace whitespace with uderscore to avoid alpha-numeric suffix warning 
+            "bl_idname": "NODE_MT_category_" + item[0].replace(" ", "_"),   
             "bl_space_type": 'NODE_EDITOR',
             "bl_label": item[0],
             "draw": custom_draw,
@@ -148,7 +150,7 @@ def register():
 
     if not hasattr(bpy.types, "NODE_MT_GN_Nodes"):
         bpy.utils.register_class(NODE_MT_GN_Nodes)
-        bpy.types.NODE_MT_add.append(add_higgsas_button)
+        bpy.types.NODE_MT_add.append(add_gn_nodes_button)
     for cls in classes:
         bpy.utils.register_class(cls)
 
@@ -156,7 +158,7 @@ def register():
 
 def unregister():
     if hasattr(bpy.types, "NODE_MT_GN_Nodes"):
-        bpy.types.NODE_MT_add.remove(add_higgsas_button)
+        bpy.types.NODE_MT_add.remove(add_gn_nodes_button)
     for cls in classes:
         bpy.utils.unregister_class(cls)
 

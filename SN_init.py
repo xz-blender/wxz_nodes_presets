@@ -35,13 +35,13 @@ bl_info = {
 
 def add_generators_button(self, context):
     if context.area.ui_type == 'ShaderNodeTree':
-        self.layout.menu('NODE_MT_custom_SN_Menu',
-                         text="Custom_SN", icon='FUND')
+        self.layout.menu('NODE_MT_custom_SN_Menu',text="Custom_SN", icon='FUND')
 
 
 shader_node_group_cache = {}
 shader_cat_list = []
 
+dir_path = os.path.dirname(__file__)
 # adapted code from https://github.com/blender/blender/blob/master/release/scripts/modules/nodeitems_utils.py
 
 
@@ -59,14 +59,10 @@ def shader_cat_generator():
                 )
                 props.group_name = group_name
 
-        menu_type = type(
-            "category_" + item[0],
-            (bpy.types.Menu,),
+        menu_type = type("NODE_MT_category_" + item[0],(bpy.types.Menu,),
             {
-                "bl_idname": "category"
-                + item[0].replace(
-                    " ", "_"
-                ),  # replace whitespace with uderscore to avoid alpha-numeric suffix warning
+                # replace whitespace with uderscore to avoid alpha-numeric suffix warning
+                "bl_idname": "NODE_MT_category"+ item[0].replace(" ", "_"),  
                 "bl_space_type": 'NODE_EDITOR',
                 "bl_label": item[0],
                 "draw": custom_draw,
